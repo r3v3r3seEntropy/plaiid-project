@@ -4,7 +4,6 @@ import {
   PlaidLinkOptions,
   PlaidLinkOnSuccess,
 } from 'react-plaid-link';
-import axios from "axios";
 import {useState,useEffect} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";

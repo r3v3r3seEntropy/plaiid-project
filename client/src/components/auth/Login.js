@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
+import axios from "axios";
 
 class Login extends Component {
   constructor() {
@@ -47,6 +48,11 @@ class Login extends Component {
       password: this.state.password
     };
 
+    // fetch('/api/plaid/getemail',{
+    //   method: 'POST',
+    //   body: JSON.stringify({email:userData.email})
+    // }).then();
+    
     this.props.loginUser(userData);
   };
   
