@@ -5,7 +5,8 @@ const isEmpty = require("is-empty");
 const initialState = {
   isAuthenticated: false,
   user: {},
-  loading: false
+  loading: false,
+  email: null
 };
 
 export default function(state = initialState, action) {

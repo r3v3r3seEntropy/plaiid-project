@@ -22,7 +22,7 @@ import Dash from "../dashboard/Dash";
 import Template from "../dashboard/Template";
 
 const Header = (props) => {
-  
+    //console.log("xyz");
     //create initial menuCollapse state using useState hook
     const [menuCollapse, setMenuCollapse] = useState(false)
 
@@ -32,6 +32,7 @@ const Header = (props) => {
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
   };
   const [showDash,setshowDash] = useState(true);
+  //console.log("okay");
   return (
     <div className="flex flex-row"  >
       <div id="header">
@@ -62,8 +63,8 @@ const Header = (props) => {
       </IconContext.Provider>
       </div>
       
-      <div className="ri8">{showDash===true ? <Dash {...props}/> : <Template {...props} />}</div>
-
+      <div className="ri8">{showDash===true ? <Dash props={props}/> : <Template {...props} />}</div>
+      
       </div>
     
   );

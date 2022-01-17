@@ -26,7 +26,7 @@ const Template = (props) => {
   const [date2,setdate2] = useState("Choose an ending date");
   // }
     const {  accounts } = props.plaid;
-
+console.log(accounts,5435);
   useEffect( ()=> {
     (
       async () => {
@@ -104,7 +104,7 @@ const Template = (props) => {
             <b className="text-3xl text-indigo-800">Transactions</b>
             
           </h5>
-          {txnloading ? (
+          {accounts.length<=0? <p>You haven't added an account yet</p> :txnloading ? (
             <p className="text-xl text-gray-600">Fetching transactions...</p>
           ) : (
             <>

@@ -18,13 +18,13 @@ class Login extends Component {
   componentDidMount() {
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/dash");
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/dash");
     }
 
     if (nextProps.errors) {
@@ -36,6 +36,7 @@ class Login extends Component {
 
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
+    //console.log(this.state.email,this.state.password);
   };
 
   onSubmit = e => {
@@ -48,7 +49,7 @@ class Login extends Component {
 
     this.props.loginUser(userData);
   };
-
+  
   render() {
     const { errors } = this.state;
 

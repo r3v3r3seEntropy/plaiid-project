@@ -12,8 +12,9 @@ import {
 // Add account
 export const addAccount = plaidData => dispatch => {
   const accounts = plaidData.accounts;
+console.log(plaidData)
   axios
-    .post("/api/plaid/accounts/add", plaidData)
+    .post("api/plaid/accounts/add", plaidData)
     .then(res =>
       dispatch({
         type: ADD_ACCOUNT,
@@ -22,6 +23,7 @@ export const addAccount = plaidData => dispatch => {
     )
     .then(data =>
       accounts ? dispatch(getTransactions(accounts.concat(data.payload))) : null
+      
     )
     .catch(err => console.log(err));
 };
