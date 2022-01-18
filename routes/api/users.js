@@ -65,7 +65,7 @@ router.post("/login", (req, res) => {
 
   const email = req.body.email;
   const password = req.body.password;
-
+  //localStorage.setItem("email", email);
   // Find user by email
   User.findOne({ email }).then(user => {
     // Check if user exists

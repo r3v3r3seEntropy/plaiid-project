@@ -14,32 +14,15 @@ import { FiLogOut } from "react-icons/fi";
 import { BiUserCircle } from "react-icons/bi";
 
 const Accounts = (props) => {
-  
+  //console.log("ok");
   useEffect( ()=> {
     
-    //const { accounts } = props;
-    //props.getTransactions(accounts);
-    //axios.post("/api/plaid/accounts/transactions",accounts).then((response) => {
-      //props=response.data;
-      //transactionsLoading=false;
-     // populate();
      },[])
 
-  // Add account
- 
-
-  // Delete account
- 
-
-  // Logout
   const onLogoutClick = e => {
     e.preventDefault();
     props.logoutUser();
   };
-
-
-  
-    //console.log(props.plaid);
     
     return (
        <>
@@ -48,40 +31,6 @@ const Accounts = (props) => {
         
         {/* {accounts.length>=1 && <Template {...props}/> } */}
         <div className=" hhw"><Header {...props}/></div>
-        {/* <div className="dnmic">
-        <Router>
-        <Switch>
-        <Route exact path="/transactions" component={showT} />
-        <Route path="/dshbrd" component={showD}  />
-        </Switch>
-        </Router>
-        </div> */}
-          {/* <hr style={{ marginTop: "2rem", opacity: ".2" }} />
-          <h5>
-            <b className="text-3xl text-indigo-800">Transactions</b>
-          </h5>
-          {transactionsLoading ? (
-            <p className="text-xl text-gray-600">Fetching transactions...</p>
-          ) : (
-            <>
-              <p className="text-xl smol">
-                You have <b>{transactionsData.length}</b> transactions from your
-                <b> {accounts.length}</b> linked
-                {accounts.length > 1 ? (
-                  <span> accounts </span>
-                ) : (
-                  <span> account </span>
-                )}
-                from the past 30 days
-              </p>
-              <MaterialTable
-                columns={transactionsColumns}
-                data={transactionsData}
-                title="Search Transactions"
-              />
-            </> */}
-          
-        
         <div className="ml-20 lgot">
           
           <button
