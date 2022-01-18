@@ -37,7 +37,7 @@ router.post("/create_link_token", async function (request, response) {
       client_user_id: uniq,
     },
     client_name: "Plaid Test App",
-    products: ["auth"],
+    products: ["auth", "transactions"],
     language: "en",
     country_codes: ["us"],
   };
@@ -182,20 +182,25 @@ router.post(
     let transactions = [];
 
     const accounts = req.body;
-
+    //console.log(accounts);
     if (accounts) {
       accounts.forEach(function (account) {
         ACCESS_TOKEN = account.accessToken;
         const institutionName = account.institutionName;
-
+        const txnreq = {
+          access_token: ACCESS_TOKEN,
+          start_date: thirtyDaysAgo,
+          end_date: today,
+        };
         client
-          .getTransactions(ACCESS_TOKEN, thirtyDaysAgo, today)
+          .transactionsGet(txnreq)
           .then((response) => {
+            //console.log(response);
             transactions.push({
               accountName: institutionName,
-              transactions: response.transactions,
+              transactions: response.data.transactions,
             });
-
+            console.log(transactions);
             if (transactions.length === accounts.length) {
               res.json(transactions);
             }
