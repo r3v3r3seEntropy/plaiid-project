@@ -47,8 +47,8 @@ class Company extends Component {
     // const userData = {
     //   email: this.state.email,
     //   password: this.state.password,
-    // };
-
+    // }; [{_id:,accounts:[user.find(itemId:_id_).acces_token).transactions.get(start,endtate)]},{},{}]
+    // chima -> chase,boa
     // fetch('/api/plaid/getemail',{
     //   method: 'POST',
     //   body: JSON.stringify({email:userData.email})
@@ -62,13 +62,9 @@ class Company extends Component {
 
     return (
       <div className="container flex h-screen ">
-        <h1>
-          Lets create your company profile so we can match Grants, Credits, and
-          Refunds to your business
-        </h1>
         <div
           style={{ marginTop: "4rem" }}
-          className="max-w-xs w-full m-auto bg-indigo-100 rounded p-5"
+          className="max-w-xs w-full m-auto bg-green-100 rounded p-5"
         >
           <div className="col s8 offset-s2">
             <Link to="/" className="btn-flat waves-effect">
@@ -84,7 +80,7 @@ class Company extends Component {
             <br />
             <form noValidate onSubmit={this.onSubmit}>
               <div className="input-field col s12">
-                <label className="block mb-2 text-indigo-500">
+                <label className="block mb-2 text-green-500">
                   Official Company name
                 </label>
 
@@ -92,10 +88,10 @@ class Company extends Component {
                   onChange={this.onChange}
                   value={this.state.name}
                   error={errors.email}
-                  id="email"
+                  id="name"
                   type="text"
                   className={classnames(
-                    "w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300",
+                    "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
                     {
                       invalid: errors.email || errors.emailnotfound,
                     }
@@ -107,7 +103,7 @@ class Company extends Component {
                 </span>
               </div>
               <div className="input-field col s12">
-                <label className="block mb-2 text-indigo-500">EIN Number</label>
+                <label className="block mb-2 text-green-500">EIN Number</label>
 
                 <input
                   onChange={this.onChange}
@@ -116,7 +112,7 @@ class Company extends Component {
                   id="ein"
                   type="number"
                   className={classnames(
-                    "w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300",
+                    "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
                     {
                       invalid: errors.password || errors.passwordincorrect,
                     }
@@ -136,7 +132,7 @@ class Company extends Component {
                     marginTop: "1rem",
                   }}
                   type="submit"
-                  className="w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
+                  className="w-full bg-green-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
                 >
                   Continue
                 </button>

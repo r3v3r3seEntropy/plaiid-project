@@ -63,7 +63,7 @@ class Login extends Component {
       <div className="container flex h-screen ">
         <div
           style={{ marginTop: "4rem" }}
-          className="max-w-xs w-full m-auto bg-indigo-100 rounded p-5"
+          className="max-w-xs w-full m-auto bg-green-100 rounded p-5"
         >
           <div className="col s8 offset-s2">
             <Link to="/" className="btn-flat waves-effect">
@@ -79,7 +79,7 @@ class Login extends Component {
             <br />
             <form noValidate onSubmit={this.onSubmit}>
               <div className="input-field col s12">
-                <label className="block mb-2 text-indigo-500">Email</label>
+                <label className="block mb-2 text-green-500">Email</label>
 
                 <input
                   onChange={this.onChange}
@@ -88,7 +88,7 @@ class Login extends Component {
                   id="email"
                   type="email"
                   className={classnames(
-                    "w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300",
+                    "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
                     {
                       invalid: errors.email || errors.emailnotfound,
                     }
@@ -100,7 +100,7 @@ class Login extends Component {
                 </span>
               </div>
               <div className="input-field col s12">
-                <label className="block mb-2 text-indigo-500">Password</label>
+                <label className="block mb-2 text-green-500">Password</label>
 
                 <input
                   onChange={this.onChange}
@@ -109,7 +109,7 @@ class Login extends Component {
                   id="password"
                   type="password"
                   className={classnames(
-                    "w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300",
+                    "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
                     {
                       invalid: errors.password || errors.passwordincorrect,
                     }
@@ -129,7 +129,7 @@ class Login extends Component {
                     marginTop: "1rem",
                   }}
                   type="submit"
-                  className="w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
+                  className="w-full bg-green-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
                 >
                   Login
                 </button>
@@ -138,7 +138,7 @@ class Login extends Component {
                 Don't have an account?{" "}
                 <Link
                   to="/register"
-                  className="text-indigo-700 hover:text-pink-700 text-lg"
+                  className="text-green-700 hover:text-pink-700 text-lg"
                 >
                   Register
                 </Link>

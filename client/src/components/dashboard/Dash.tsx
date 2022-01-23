@@ -82,7 +82,7 @@ const Dash = (props: {
         <button
           style={{ marginRight: "1rem" }}
           onClick={onDeleteClick.bind(this, account._id)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
         >
           <i className="material-icons">delete</i>
         </button>
@@ -97,20 +97,24 @@ const Dash = (props: {
       <br />
       <br />
       <h2>
-        <p className="font-bold text-5xl text-indigo-500">Welcome!</p>
+        <p className="font-bold text-5xl ">Welcome!</p>
       </h2>
       <p className="text-2xl smol">Hey there</p>
       <h5>
-        <b className="text-3xl text-indigo-800">Linked Accounts</b>
+        <b className="text-3xl ">Linked Accounts</b>
       </h5>
       <p className="text-xl smol">Add or remove your bank accounts below</p>
       <ul className="text-lg">{accountItems}</ul>
       <br />
 
       {linkToken != null ? (
-        <Link {...props} linkToken={linkToken} />
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          <Link {...props} linkToken={linkToken} />
+        </button>
       ) : (
-        <h3>Loading..</h3>
+        <h3 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          Loading..
+        </h3>
       )}
     </div>
   );

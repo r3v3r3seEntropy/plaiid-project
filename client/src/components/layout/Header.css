@@ -20,7 +20,7 @@
 #header .pro-sidebar-inner {
   background-image: linear-gradient(
     to bottom right,
-    rgb(61, 136, 223),
+    rgb(61, 223, 88),
     rgb(255, 255, 255)
   );
   background-color: rgb(170, 53, 53);
@@ -30,7 +30,7 @@
   overflow-y: hidden;
 }
 #header .pro-sidebar-inner .pro-sidebar-layout .logotext p {
-  font-size: 30px;
+  font-size: 25px;
   padding: 0 20px;
   color: #000;
   font-weight: bold;
