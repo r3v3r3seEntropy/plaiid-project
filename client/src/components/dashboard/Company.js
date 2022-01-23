@@ -5,19 +5,20 @@ import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
 import axios from "axios";
+import { registerUser } from "../../actions/authActions";
 
-class Login extends Component {
+class Company extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
-      password: "",
+      name: "",
+      ein: "",
       errors: {},
     };
   }
 
   componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
+    // If logged in and user navigates to Company page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dash");
     }
@@ -43,17 +44,17 @@ class Login extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const userData = {
-      email: this.state.email,
-      password: this.state.password,
-    };
+    // const userData = {
+    //   email: this.state.email,
+    //   password: this.state.password,
+    // };
 
     // fetch('/api/plaid/getemail',{
     //   method: 'POST',
     //   body: JSON.stringify({email:userData.email})
     // }).then();
-
-    this.props.loginUser(userData);
+    //axios.post("/api/plaid/CreateCompany", this.state);
+    this.props.registerUser(this.props.history.nusr, this.props.history);
   };
 
   render() {
@@ -61,6 +62,10 @@ class Login extends Component {
 
     return (
       <div className="container flex h-screen ">
+        <h1>
+          Lets create your company profile so we can match Grants, Credits, and
+          Refunds to your business
+        </h1>
         <div
           style={{ marginTop: "4rem" }}
           className="max-w-xs w-full m-auto bg-indigo-100 rounded p-5"
@@ -73,20 +78,22 @@ class Login extends Component {
             <br />
             <div className="text-xl col s12">
               <h4>
-                <b>Login</b>
+                <b>Company Profile</b>
               </h4>
             </div>
             <br />
             <form noValidate onSubmit={this.onSubmit}>
               <div className="input-field col s12">
-                <label className="block mb-2 text-indigo-500">Email</label>
+                <label className="block mb-2 text-indigo-500">
+                  Official Company name
+                </label>
 
                 <input
                   onChange={this.onChange}
-                  value={this.state.email}
+                  value={this.state.name}
                   error={errors.email}
                   id="email"
-                  type="email"
+                  type="text"
                   className={classnames(
                     "w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300",
                     {
@@ -100,14 +107,14 @@ class Login extends Component {
                 </span>
               </div>
               <div className="input-field col s12">
-                <label className="block mb-2 text-indigo-500">Password</label>
+                <label className="block mb-2 text-indigo-500">EIN Number</label>
 
                 <input
                   onChange={this.onChange}
-                  value={this.state.password}
+                  value={this.state.ein}
                   error={errors.password}
-                  id="password"
-                  type="password"
+                  id="ein"
+                  type="number"
                   className={classnames(
                     "w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300",
                     {
@@ -131,18 +138,9 @@ class Login extends Component {
                   type="submit"
                   className="w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
                 >
-                  Login
+                  Continue
                 </button>
               </div>
-              <p className="grey-text text-darken-1">
-                Don't have an account?{" "}
-                <Link
-                  to="/register"
-                  className="text-indigo-700 hover:text-pink-700 text-lg"
-                >
-                  Register
-                </Link>
-              </p>
             </form>
           </div>
         </div>
@@ -151,7 +149,7 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+Company.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
@@ -162,4 +160,4 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(mapStateToProps, { registerUser })(Company);

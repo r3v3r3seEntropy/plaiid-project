@@ -10,6 +10,7 @@ import axios from "axios";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import Company from "./components/dashboard/Company";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dash from "./components/dashboard/Dash.tsx";
 import Accounts from "./components/dashboard/Accounts";
@@ -46,6 +47,8 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/company" component={Company} />
+
             <Switch>
               <PrivateRoute exact path="/dash" component={Accounts} />
             </Switch>
