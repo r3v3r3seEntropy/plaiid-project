@@ -1,63 +1,66 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
 import axios from "axios";
+
 import { registerUser } from "../../actions/authActions";
+import Select from "react-select";
 const states = [
-  "Alabama",
-  "Alaska",
-  "Arizona",
-  "Arkansas",
-  "California",
-  "Colorado",
-  "Connecticut",
-  "Delaware",
-  "Florida",
-  "Georgia",
-  "Hawaii",
-  "Idaho",
-  "IllinoisIndiana",
-  "Iowa",
-  "Kansas",
-  "Kentucky",
-  "Louisiana",
-  "Maine",
-  "Maryland",
-  "Massachusetts",
-  "Michigan",
-  "Minnesota",
-  "Mississippi",
-  "Missouri",
-  "MontanaNebraska",
-  "Nevada",
-  "New",
-  "Hampshire",
-  "New",
-  "Jersey",
-  "New",
-  "Mexico",
-  "New",
-  "York",
-  "North",
-  "Carolina",
-  "North",
-  "Dakota",
-  "Ohio",
-  "Oklahoma",
-  "Oregon",
-  "PennsylvaniaRhode",
-  "Island",
-  "South",
-  "Carolina",
-  "South",
-  "Dakota",
-  "Tennessee",
-  "Texas",
-  "Utah",
+  { value: "Alabama", label: "Alabama" },
+  { value: "Alaska", label: "Alaska" },
+  { value: "Arizona", label: "Arizona" },
+  { value: "Arkansas", label: "Arkansas" },
+  { value: "California", label: "California" },
+  { value: "Colorado", label: "Colorado" },
+  { value: "Connecticut", label: "Connecticut" },
+  { value: "Delaware", label: "Delaware" },
+  { value: "Florida", label: "Florida" },
+  { value: "Georgia", label: "Georgia" },
+  { value: "Hawaii", label: "Hawaii" },
+  { value: "Idaho", label: "Idaho" },
+  { value: "Illinois", label: "Illinois" },
+  { value: "Indiana", label: "Indiana" },
+  { value: "Iowa", label: "Iowa" },
+  { value: "Kansas", label: "Kansas" },
+  { value: "Kentucky", label: "Kentucky" },
+  { value: "Louisiana", label: "Louisiana" },
+  { value: "Maine", label: "Maine" },
+  { value: "Maryland", label: "Maryland" },
+  { value: "Massachusetts", label: "Massachusetts" },
+  { value: "Michigan", label: "Michigan" },
+  { value: "Minnesota", label: "Minnesota" },
+  { value: "Mississippi", label: "Mississippi" },
+  { value: "Missouri", label: "Missouri" },
+  { value: "Montana", label: "Montana" },
+  { value: "Nebraska", label: "Nebraska" },
+  { value: "Nevada", label: "Nevada" },
+  { value: "New Hampshire", label: "New Hampshire" },
+  { value: "New Jersey", label: "New Jersey" },
+  { value: "New Mexico", label: "New Mexico" },
+  { value: "New York", label: "New York" },
+  { value: "North Carolina", label: "North Carolina" },
+  { value: "North Dakota", label: "North Dakota" },
+  { value: "Ohio", label: "Ohio" },
+  { value: "Oklahoma", label: "Oklahoma" },
+  { value: "Oregon", label: "Oregon" },
+  { value: "Pennsylvania", label: "Pennsylvania" },
+  { value: "Rhode Island", label: "Rhode Island" },
+  { value: "South Carolina", label: "South Carolina" },
+  { value: "South Dakota", label: "South Dakota" },
+  { value: "Tennessee", label: "Tennessee" },
+  { value: "Texas", label: "Texas" },
+  { value: "Utah", label: "Utah" },
+  { value: "Vermont", label: "Vermont" },
+  { value: "Virginia", label: "Virginia" },
+  { value: "Washington", label: "Washington" },
+  { value: "West Virginia", label: "West Virginia" },
+  { value: "Wisconsin", label: "Wisconsin" },
+  { value: "Wyoming", label: "Wyoming" },
 ];
+
 class Company extends Component {
   constructor() {
     super();
@@ -65,6 +68,7 @@ class Company extends Component {
       name: "",
       ein: "",
       errors: {},
+      selectedOptions: null,
     };
   }
 
@@ -110,7 +114,10 @@ class Company extends Component {
 
   render() {
     const { errors } = this.state;
-
+    const handleSelectChange = (event) => {
+      this.setState(...this.state, event);
+      console.log(this.state);
+    };
     return (
       <div className="container flex h-screen ">
         <div
@@ -174,6 +181,9 @@ class Company extends Component {
                   {errors.passwordincorrect}
                 </span>
               </div>
+              <label className="block mb-2 text-green-500">States</label>
+
+              <Select isMulti options={states} />
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button
                   style={{
