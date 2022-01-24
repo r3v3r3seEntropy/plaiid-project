@@ -93,9 +93,7 @@ const Dash = (props: {
   return (
     <div className="ml-20 mainc">
       <br />
-      <br />
-      <br />
-      <br />
+
       <h2>
         <p className="font-bold text-5xl ">Welcome!</p>
       </h2>

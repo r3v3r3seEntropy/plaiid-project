@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import credit_card from "../../img/credit_card.png";
-
+import logo from "../../img/logo.png";
 class Landing extends Component {
   componentDidMount() {
     // If logged in, should redirect them to dashboard
@@ -18,14 +18,12 @@ class Landing extends Component {
         <div className="row" style={{ width: "30%", margin: "0 auto" }}>
           <div className="col s12 center-align">
             <img
-              src={credit_card}
+              src={logo}
               style={{ width: "350px" }}
               className="responsive-img credit-card"
               alt="Undraw"
             />
-            <h1 style={{ textAlign: "center" }} className="text-2xl">
-              Claimyouraid
-            </h1>
+
             <br />
             <div className="inline-block">
               <Link
