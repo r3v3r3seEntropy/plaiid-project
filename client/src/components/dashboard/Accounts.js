@@ -32,7 +32,7 @@ const Accounts = (props) => {
           style={{ background: "linear-gradient(to right, #3DDF58,#ffffff)" }}
           class="py-5 text-white text-center"
         ></header>
-        <main class="flex-1 overflow-y-auto p-5">
+        <main class="flex-1  p-5">
           <div className="flex flex-row ">
             {/* {accounts.length>=1 && <Template {...props}/> } */}
             <div className=" hhw">
