@@ -10,7 +10,7 @@ const { Configuration, PlaidApi, PlaidEnvironments } = require("plaid");
 // Load Account and User models
 const Account = require("../../models/Account");
 const User = require("../../models/User");
-
+const Company = require("../../models/Company");
 const configuration = new Configuration({
   basePath: PlaidEnvironments["sandbox"],
   baseOptions: {
@@ -23,7 +23,6 @@ const configuration = new Configuration({
 
 const client = new PlaidApi(configuration);
 var uniq;
-
 router.post("/getid", (req, res) => {
   uniq = req.body.id;
 });
@@ -42,8 +41,15 @@ router.post("/create_link_token", async function (request, response) {
     country_codes: ["us"],
   };
   try {
-    const createTokenResponse = await client.linkTokenCreate(request1);
-    await response.json(createTokenResponse.data);
+    const returnres = async () => {
+      if (typeof uniq !== "undefined") {
+        const createTokenResponse = await client.linkTokenCreate(request1);
+        await response.json(createTokenResponse.data);
+      } else {
+        setTimeout(returnres, 250);
+      }
+    };
+    returnres();
   } catch (error) {
     // handle error
     console.log(error.data);
@@ -122,38 +128,6 @@ router.post(
   }
 );
 
-// if (PUBLIC_TOKEN) {
-//   client
-//     .exchangePublicToken(PUBLIC_TOKEN) exchanging public token to access
-//     .then(exchangeResponse => {
-//       ACCESS_TOKEN = exchangeResponse.access_token; // res gives access token
-//       ITEM_ID = exchangeResponse.item_id;
-
-//       // Check if account already exists for specific user
-//       Account.findOne({
-//         userId: req.user.id,
-//         institutionId: institution_id
-//       })
-//         .then(account => {
-//           if (account) {
-//             console.log("Account already exists");
-//           } else {
-//             const newAccount = new Account({
-//               userId: userId,
-//               accessToken: ACCESS_TOKEN,
-//               itemId: ITEM_ID,
-//               institutionId: institution_id,
-//               institutionName: name
-//             });
-
-//             newAccount.save().then(account => res.json(account));
-//           }
-//         })
-//         .catch(err => console.log(err)); // Mongo Error
-//     })
-//     .catch(err => console.log(err)); // Plaid Error
-// }
-
 // @route DELETE api/plaid/accounts/:id
 // @desc Delete account with given id
 // @access Private
@@ -211,4 +185,14 @@ router.post(
   }
 );
 
+router.post("/CreateCompany", (req, res) => {
+  console.log(req.body);
+  const newcompany = new Company({
+    name: req.body.name,
+    ein: req.body.ein,
+    states: req.body.states,
+  });
+
+  newcompany.save().then((company) => res.json(company));
+});
 module.exports = router;

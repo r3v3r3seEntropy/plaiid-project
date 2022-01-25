@@ -60,7 +60,7 @@ const states = [
   { value: "Wisconsin", label: "Wisconsin" },
   { value: "Wyoming", label: "Wyoming" },
 ];
-
+var selectedStates = null;
 class Company extends Component {
   constructor() {
     super();
@@ -109,14 +109,23 @@ class Company extends Component {
     //   body: JSON.stringify({email:userData.email})
     // }).then();
     //axios.post("/api/plaid/CreateCompany", this.state);
+    const companyData = {
+      name: this.state.name,
+      ein: this.state.ein,
+      states: selectedStates,
+    };
+    axios.post("/api/plaid/CreateCompany", companyData);
     this.props.registerUser(this.props.history.nusr, this.props.history);
   };
 
   render() {
     const { errors } = this.state;
     const handleSelectChange = (event) => {
-      this.setState(...this.state, event);
-      console.log(this.state);
+      const curstates = [];
+      event.map((event) => {
+        curstates.push(event.value);
+      });
+      selectedStates = curstates;
     };
     return (
       <div className="container flex h-screen ">
@@ -183,7 +192,7 @@ class Company extends Component {
               </div>
               <label className="block mb-2 text-green-500">States</label>
 
-              <Select isMulti options={states} />
+              <Select isMulti options={states} onChange={handleSelectChange} />
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button
                   style={{
