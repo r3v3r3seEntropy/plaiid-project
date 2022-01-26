@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import classnames from "classnames";
 import LogoHeader from "../layout/LogoHeader";
+const borderColor = "#A2C987";
 
 class Register extends Component {
   constructor() {
@@ -58,7 +59,7 @@ class Register extends Component {
       <>
         <LogoHeader />
         <div className="container flex">
-          <div className="row max-w-xs w-full m-auto bg-green-100 rounded p-5">
+          <div className="row max-w-xs w-full m-auto bg-white box-border border-4 rounded p-5">
             <div className="col s8 offset-s2">
               <Link to="/" className="btn-flat waves-effect">
                 <i className="material-icons left">keyboard_backspace</i> Back

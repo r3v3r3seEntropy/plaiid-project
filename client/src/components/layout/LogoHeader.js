@@ -6,7 +6,7 @@ const LogoHeader = (props) => {
       <img src={logo} className="h-20 w-25"></img>
       <div class="flex flex-col">
         <header
-          style={{ background: "linear-gradient(to right, #3DDF58,#ffffff)" }}
+          style={{ background: "#00B050" }}
           class="py-5 text-white text-center"
         >
           {props && props.title}

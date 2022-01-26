@@ -185,14 +185,18 @@ router.post(
   }
 );
 
-router.post("/CreateCompany", (req, res) => {
-  console.log(req.body);
-  const newcompany = new Company({
-    name: req.body.name,
-    ein: req.body.ein,
-    states: req.body.states,
-  });
+router.post(
+  "/CreateCompany",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    console.log(req.body);
+    const newcompany = new Company({
+      name: req.body.name,
+      ein: req.body.ein,
+      states: req.body.states,
+    });
 
-  newcompany.save().then((company) => res.json(company));
-});
+    newcompany.save().then((company) => res.json(company));
+  }
+);
 module.exports = router;

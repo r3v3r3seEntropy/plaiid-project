@@ -6,7 +6,7 @@ import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
 import axios from "axios";
 import LogoHeader from "../layout/LogoHeader";
-
+import store from "../../../src/store";
 import { registerUser } from "../../actions/authActions";
 import Select from "react-select";
 const states = [
@@ -62,13 +62,14 @@ const states = [
   { value: "Wyoming", label: "Wyoming" },
 ];
 var selectedStates = null;
+const borderColor = "#A2C987";
+var curUser = "";
 class Company extends Component {
   constructor() {
     super();
     this.state = {
       name: "",
       ein: "",
-      errors: {},
       selectedOptions: null,
     };
   }
@@ -84,15 +85,16 @@ class Company extends Component {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/dash");
     }
-
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors,
-      });
-    }
   }
 
   onChange = (e) => {
+    store.subscribe(() => {
+      // When state will be updated(in our case, when items will be fetched),
+      // we will update local component state and force component to rerender
+      // with new data.
+      curUser = store.getState();
+      console.log(curUser);
+    });
     this.setState({ [e.target.id]: e.target.value });
     //console.log(this.state.email,this.state.password);
   };
@@ -120,7 +122,6 @@ class Company extends Component {
   };
 
   render() {
-    const { errors } = this.state;
     const handleSelectChange = (event) => {
       const curstates = [];
       event.map((event) => {
@@ -131,89 +132,74 @@ class Company extends Component {
     return (
       <>
         <LogoHeader />
+        <div className="py-1 ml-20">
+          Welcome {curUser}
+          <br />
+          <br />
+          <label className="text-gray-500">
+            Let’s create your company profile so we can match Grants, Credits,
+            and Refunds to your business:
+          </label>
+        </div>
         <div className="container flex ">
           <div
-            style={{ marginTop: "0.25rem" }}
-            className="max-w-xs w-full m-auto bg-green-100 rounded p-5"
+            style={{ marginTop: "0.25rem", borderColor: borderColor }}
+            className="max-w-xs w-full m-auto border-4 rounded p-5"
           >
             <div className="col s8 offset-s2">
-              <Link to="/" className="btn-flat waves-effect">
-                <i className="material-icons left">keyboard_backspace</i> Back
-              </Link>
-              <br />
-              <br />
-              <div className="text-xl col s12">
-                <h4>
-                  <b>Company Profile</b>
-                </h4>
-              </div>
               <br />
               <form noValidate onSubmit={this.onSubmit}>
                 <div className="input-field col s12">
-                  <label className="block mb-2 text-green-500">
+                  <label className="block mb-2 text-gray-500">
                     Official Company name
                   </label>
 
                   <input
                     onChange={this.onChange}
                     value={this.state.name}
-                    error={errors.email}
                     id="name"
                     type="text"
+                    style={{ borderColor: borderColor }}
                     className={classnames(
-                      "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
-                      {
-                        invalid: errors.email || errors.emailnotfound,
-                      }
+                      "w-full p-2 mb-6 text-gray-700 border-2 outline-none"
                     )}
                   />
-                  <span className="red-text">
-                    {errors.email}
-                    {errors.emailnotfound}
-                  </span>
                 </div>
                 <div className="input-field col s12">
-                  <label className="block mb-2 text-green-500">
-                    EIN Number
-                  </label>
+                  <label className="block mb-2 text-gray-500">EIN Number</label>
 
                   <input
                     onChange={this.onChange}
                     value={this.state.ein}
-                    error={errors.password}
                     id="ein"
                     type="number"
+                    style={{ borderColor: borderColor }}
                     className={classnames(
-                      "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
-                      {
-                        invalid: errors.password || errors.passwordincorrect,
-                      }
+                      "w-full p-2 mb-6 text-gray-700 border-2  outline-none"
                     )}
                   />
-                  <span className="red-text">
-                    {errors.password}
-                    {errors.passwordincorrect}
-                  </span>
                 </div>
-                <label className="block mb-2 text-green-500">States</label>
+                <label className="block mb-2 text-gray-500">States</label>
 
                 <Select
                   isMulti
                   options={states}
                   onChange={handleSelectChange}
+                  style={{ borderColor: borderColor }}
                 />
                 <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                   <button
                     style={{
-                      width: "150px",
+                      width: "90%",
                       borderRadius: "3px",
                       letterSpacing: "1.5px",
                       marginTop: "1rem",
+                      backgroundColor: "#00B050",
                     }}
                     type="submit"
-                    className="w-full bg-green-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-1 rounded"
+                    className="w-full text-white font-bold py-2 px-4 rounded"
                   >
-                    Continue
+                    Click here to continue
                   </button>
                 </div>
               </form>
@@ -228,12 +214,10 @@ class Company extends Component {
 Company.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  errors: state.errors,
 });
 
 export default connect(mapStateToProps, { registerUser })(Company);
