@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
 import axios from "axios";
+import LogoHeader from "../layout/LogoHeader";
 
 import { registerUser } from "../../actions/authActions";
 import Select from "react-select";
@@ -128,89 +129,98 @@ class Company extends Component {
       selectedStates = curstates;
     };
     return (
-      <div className="container flex h-screen ">
-        <div
-          style={{ marginTop: "4rem" }}
-          className="max-w-xs w-full m-auto bg-green-100 rounded p-5"
-        >
-          <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i> Back
-            </Link>
-            <br />
-            <br />
-            <div className="text-xl col s12">
-              <h4>
-                <b>Company Profile</b>
-              </h4>
+      <>
+        <LogoHeader />
+        <div className="container flex ">
+          <div
+            style={{ marginTop: "0.25rem" }}
+            className="max-w-xs w-full m-auto bg-green-100 rounded p-5"
+          >
+            <div className="col s8 offset-s2">
+              <Link to="/" className="btn-flat waves-effect">
+                <i className="material-icons left">keyboard_backspace</i> Back
+              </Link>
+              <br />
+              <br />
+              <div className="text-xl col s12">
+                <h4>
+                  <b>Company Profile</b>
+                </h4>
+              </div>
+              <br />
+              <form noValidate onSubmit={this.onSubmit}>
+                <div className="input-field col s12">
+                  <label className="block mb-2 text-green-500">
+                    Official Company name
+                  </label>
+
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.name}
+                    error={errors.email}
+                    id="name"
+                    type="text"
+                    className={classnames(
+                      "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
+                      {
+                        invalid: errors.email || errors.emailnotfound,
+                      }
+                    )}
+                  />
+                  <span className="red-text">
+                    {errors.email}
+                    {errors.emailnotfound}
+                  </span>
+                </div>
+                <div className="input-field col s12">
+                  <label className="block mb-2 text-green-500">
+                    EIN Number
+                  </label>
+
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.ein}
+                    error={errors.password}
+                    id="ein"
+                    type="number"
+                    className={classnames(
+                      "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
+                      {
+                        invalid: errors.password || errors.passwordincorrect,
+                      }
+                    )}
+                  />
+                  <span className="red-text">
+                    {errors.password}
+                    {errors.passwordincorrect}
+                  </span>
+                </div>
+                <label className="block mb-2 text-green-500">States</label>
+
+                <Select
+                  isMulti
+                  options={states}
+                  onChange={handleSelectChange}
+                />
+                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+                  <button
+                    style={{
+                      width: "150px",
+                      borderRadius: "3px",
+                      letterSpacing: "1.5px",
+                      marginTop: "1rem",
+                    }}
+                    type="submit"
+                    className="w-full bg-green-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-1 rounded"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </form>
             </div>
-            <br />
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
-                <label className="block mb-2 text-green-500">
-                  Official Company name
-                </label>
-
-                <input
-                  onChange={this.onChange}
-                  value={this.state.name}
-                  error={errors.email}
-                  id="name"
-                  type="text"
-                  className={classnames(
-                    "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
-                    {
-                      invalid: errors.email || errors.emailnotfound,
-                    }
-                  )}
-                />
-                <span className="red-text">
-                  {errors.email}
-                  {errors.emailnotfound}
-                </span>
-              </div>
-              <div className="input-field col s12">
-                <label className="block mb-2 text-green-500">EIN Number</label>
-
-                <input
-                  onChange={this.onChange}
-                  value={this.state.ein}
-                  error={errors.password}
-                  id="ein"
-                  type="number"
-                  className={classnames(
-                    "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
-                    {
-                      invalid: errors.password || errors.passwordincorrect,
-                    }
-                  )}
-                />
-                <span className="red-text">
-                  {errors.password}
-                  {errors.passwordincorrect}
-                </span>
-              </div>
-              <label className="block mb-2 text-green-500">States</label>
-
-              <Select isMulti options={states} onChange={handleSelectChange} />
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem",
-                  }}
-                  type="submit"
-                  className="w-full bg-green-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
-                >
-                  Continue
-                </button>
-              </div>
-            </form>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
