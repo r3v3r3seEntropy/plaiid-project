@@ -24,25 +24,30 @@ const configuration = new Configuration({
 const client = new PlaidApi(configuration);
 var uniq;
 router.post("/getid", (req, res) => {
-  uniq = req.body.id;
+  try {
+    uniq = req.body.id;
+  } catch (err) {
+    console.log("this is the getid error", err.data);
+  }
 });
 router.post("/create_link_token", async function (request, response) {
   // Get the client_user_id by searching for the current user
   // const user = await User.find(...); mongodb field _id unique
   //const clientUserId = user.id; logged in user k liye key  db email pwd + id
-  const request1 = {
-    user: {
-      // This should correspond to a unique id for the current user.
-      client_user_id: uniq,
-    },
-    client_name: "Plaid Test App",
-    products: ["auth", "transactions"],
-    language: "en",
-    country_codes: ["us"],
-  };
+
   try {
     const returnres = async () => {
       if (typeof uniq !== "undefined") {
+        const request1 = {
+          user: {
+            // This should correspond to a unique id for the current user.
+            client_user_id: uniq,
+          },
+          client_name: "Plaid Test App",
+          products: ["auth", "transactions"],
+          language: "en",
+          country_codes: ["us"],
+        };
         const createTokenResponse = await client.linkTokenCreate(request1);
         await response.json(createTokenResponse.data);
       } else {
@@ -52,7 +57,7 @@ router.post("/create_link_token", async function (request, response) {
     returnres();
   } catch (error) {
     // handle error
-    console.log(error.data);
+    console.log("This is a plaid link button error", error.data);
   }
 });
 
@@ -185,18 +190,14 @@ router.post(
   }
 );
 
-router.post(
-  "/CreateCompany",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    console.log(req.body);
-    const newcompany = new Company({
-      name: req.body.name,
-      ein: req.body.ein,
-      states: req.body.states,
-    });
+router.post("/CreateCompany", (req, res) => {
+  console.log(req.body);
+  const newcompany = new Company({
+    name: req.body.name,
+    ein: req.body.ein,
+    states: req.body.states,
+  });
 
-    newcompany.save().then((company) => res.json(company));
-  }
-);
+  newcompany.save().then((company) => res.json(company));
+});
 module.exports = router;

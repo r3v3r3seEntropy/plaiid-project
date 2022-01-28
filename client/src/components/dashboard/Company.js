@@ -71,6 +71,7 @@ class Company extends Component {
       name: "",
       ein: "",
       selectedOptions: null,
+      showConfirmation: false,
     };
   }
 
@@ -79,6 +80,13 @@ class Company extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dash");
     }
+    store.subscribe(() => {
+      // When state will be updated(in our case, when items will be fetched),
+      // we will update local component state and force component to rerender
+      // with new data.
+      curUser = store.getState();
+      console.log(curUser);
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,30 +96,12 @@ class Company extends Component {
   }
 
   onChange = (e) => {
-    store.subscribe(() => {
-      // When state will be updated(in our case, when items will be fetched),
-      // we will update local component state and force component to rerender
-      // with new data.
-      curUser = store.getState();
-      console.log(curUser);
-    });
     this.setState({ [e.target.id]: e.target.value });
     //console.log(this.state.email,this.state.password);
   };
 
   onSubmit = (e) => {
     e.preventDefault();
-
-    // const userData = {
-    //   email: this.state.email,
-    //   password: this.state.password,
-    // }; [{_id:,accounts:[user.find(itemId:_id_).acces_token).transactions.get(start,endtate)]},{},{}]
-    // chima -> chase,boa
-    // fetch('/api/plaid/getemail',{
-    //   method: 'POST',
-    //   body: JSON.stringify({email:userData.email})
-    // }).then();
-    //axios.post("/api/plaid/CreateCompany", this.state);
     const companyData = {
       name: this.state.name,
       ein: this.state.ein,
@@ -132,80 +122,122 @@ class Company extends Component {
     return (
       <>
         <LogoHeader />
-        <div className="py-1 ml-20">
-          Welcome {curUser}
-          <br />
-          <br />
-          <label className="text-gray-500">
-            Let’s create your company profile so we can match Grants, Credits,
-            and Refunds to your business:
-          </label>
-        </div>
-        <div className="container flex ">
-          <div
-            style={{ marginTop: "0.25rem", borderColor: borderColor }}
-            className="max-w-xs w-full m-auto border-4 rounded p-5"
-          >
-            <div className="col s8 offset-s2">
+        {this.state.showConfirmation === true ? (
+          <div className="intro ml-20">
+            <p>We just created your company profile</p>
+            <br />
+            <p className="text-gray-500">
+              You signed up with ClaimYourAid.com so we can look for Grants,
+              Credits, and Refunds that your business qualifies for.
+              <br /> To do so most effectively, it is important to map your
+              company systems to ClaimYourAid.com so we can periodically
+              <br /> update your information on record in order to find the
+              latest programs your business qualifies for.
+            </p>
+            <button
+              style={{
+                justifyContent: "center",
+                width: "15%",
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem",
+                backgroundColor: "#00B050",
+              }}
+              onClick={this.onSubmit}
+              type="submit"
+              className="w-full text-white font-bold py-2 px-4 rounded"
+            >
+              Click here to continue
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="py-1 ml-20">
+              Welcome {}
               <br />
-              <form noValidate onSubmit={this.onSubmit}>
-                <div className="input-field col s12">
-                  <label className="block mb-2 text-gray-500">
-                    Official Company name
-                  </label>
-
-                  <input
-                    onChange={this.onChange}
-                    value={this.state.name}
-                    id="name"
-                    type="text"
-                    style={{ borderColor: borderColor }}
-                    className={classnames(
-                      "w-full p-2 mb-6 text-gray-700 border-2 outline-none"
-                    )}
-                  />
-                </div>
-                <div className="input-field col s12">
-                  <label className="block mb-2 text-gray-500">EIN Number</label>
-
-                  <input
-                    onChange={this.onChange}
-                    value={this.state.ein}
-                    id="ein"
-                    type="number"
-                    style={{ borderColor: borderColor }}
-                    className={classnames(
-                      "w-full p-2 mb-6 text-gray-700 border-2  outline-none"
-                    )}
-                  />
-                </div>
-                <label className="block mb-2 text-gray-500">States</label>
-
-                <Select
-                  isMulti
-                  options={states}
-                  onChange={handleSelectChange}
-                  style={{ borderColor: borderColor }}
-                />
-                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                  <button
-                    style={{
-                      width: "90%",
-                      borderRadius: "3px",
-                      letterSpacing: "1.5px",
-                      marginTop: "1rem",
-                      backgroundColor: "#00B050",
-                    }}
-                    type="submit"
-                    className="w-full text-white font-bold py-2 px-4 rounded"
+              <br />
+              <label className="text-gray-500">
+                Let’s create your company profile so we can match Grants,
+                Credits, and Refunds to your business:
+              </label>
+            </div>
+            <div className="container flex ">
+              <div
+                style={{ marginTop: "0.25rem", borderColor: borderColor }}
+                className="max-w-xs w-full m-auto border-4 rounded p-5"
+              >
+                <div className="col s8 offset-s2">
+                  <br />
+                  <form
+                    noValidate
+                    onSubmit={() => this.setState({ showConfirmation: true })}
                   >
-                    Click here to continue
-                  </button>
+                    <div className="input-field col s12">
+                      <label className="block mb-2 text-gray-500">
+                        Official Company name
+                      </label>
+
+                      <input
+                        required
+                        onChange={this.onChange}
+                        value={this.state.name}
+                        id="name"
+                        type="text"
+                        style={{ borderColor: borderColor }}
+                        className={classnames(
+                          "w-full p-2 mb-6 text-gray-700 border-2 outline-none"
+                        )}
+                      />
+                    </div>
+                    <div className="input-field col s12">
+                      <label className="block mb-2 text-gray-500">
+                        EIN Number
+                      </label>
+
+                      <input
+                        required
+                        onChange={this.onChange}
+                        value={this.state.ein}
+                        id="ein"
+                        type="number"
+                        style={{ borderColor: borderColor }}
+                        className={classnames(
+                          "w-full p-2 mb-6 text-gray-700 border-2  outline-none"
+                        )}
+                      />
+                    </div>
+                    <label className="block mb-2 text-gray-500">States</label>
+
+                    <Select
+                      isMulti
+                      options={states}
+                      onChange={handleSelectChange}
+                      style={{ borderColor: borderColor }}
+                    />
+                    <div
+                      className="col s12"
+                      style={{ paddingLeft: "11.250px" }}
+                    >
+                      <button
+                        style={{
+                          width: "90%",
+                          borderRadius: "3px",
+                          letterSpacing: "1.5px",
+                          marginTop: "1rem",
+                          backgroundColor: "#00B050",
+                        }}
+                        type="submit"
+                        className="w-full text-white font-bold py-2 px-4 rounded"
+                      >
+                        Click here to continue
+                      </button>
+                    </div>
+                  </form>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </>
     );
   }

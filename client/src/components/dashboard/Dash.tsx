@@ -67,29 +67,32 @@ const Dash = (props: {
   const { user } = props.plaid;
   //generateToken();
   const accounts = props.plaid.accounts;
-  let accountItems = accounts.map(
-    (account: {
-      _id: React.Key | null | undefined;
-      institutionName:
-        | boolean
-        | React.ReactChild
-        | React.ReactFragment
-        | React.ReactPortal
-        | null
-        | undefined;
-    }) => (
-      <li key={account._id} style={{ marginTop: "1rem" }}>
-        <button
-          style={{ marginRight: "1rem" }}
-          onClick={onDeleteClick.bind(this, account._id)}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
-        >
-          <i className="material-icons">delete</i>
-        </button>
-        <b>{account.institutionName}</b>
-      </li>
-    )
-  );
+  let accountItems =
+    accounts === undefined
+      ? ""
+      : accounts.map(
+          (account: {
+            _id: React.Key | null | undefined;
+            institutionName:
+              | boolean
+              | React.ReactChild
+              | React.ReactFragment
+              | React.ReactPortal
+              | null
+              | undefined;
+          }) => (
+            <li key={account._id} style={{ marginTop: "1rem" }}>
+              <button
+                style={{ marginRight: "1rem" }}
+                onClick={onDeleteClick.bind(this, account._id)}
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+              >
+                <i className="material-icons">delete</i>
+              </button>
+              <b>{account.institutionName}</b>
+            </li>
+          )
+        );
   return (
     <div className="ml-20 mainc">
       <br />
