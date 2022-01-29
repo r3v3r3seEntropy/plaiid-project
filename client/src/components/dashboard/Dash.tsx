@@ -17,6 +17,7 @@ import { logoutUser } from "../../actions/authActions";
 
 var adac: (arg0: { public_token: any; metadata: any }) => void;
 var ac: any;
+var veryUniqueId;
 const Dash = (props: {
   addAccount?: any;
   accounts?: any;
@@ -27,15 +28,37 @@ const Dash = (props: {
 }) => {
   // Add account
   const [linkToken, setLinkToken] = useState(null);
-
+  const [decoded, setdecoded] = useState(null);
   const generateToken = async () => {
+    const token = localStorage.jwtToken;
+
+    var newToken = token.substring(7); // used to remove the Bearer string and space from the token so that
+    //it consists of only header,payload and signature.
+    veryUniqueId = parseJWT(newToken).id;
+    console.log(veryUniqueId);
+    setdecoded(veryUniqueId);
     const response = await fetch("api/plaid/create_link_token", {
       method: "POST",
+      body: JSON.stringify({ veryUniqueId }),
     });
     const data = await response.json();
 
     setLinkToken(data.link_token);
     //console.log(linkToken);
+  };
+  const parseJWT = (tkn: string) => {
+    var base64Url = tkn.split(".")[1];
+    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    var jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+
+    return JSON.parse(jsonPayload);
   };
   useEffect(() => {
     props.getAccounts();
@@ -81,42 +104,79 @@ const Dash = (props: {
               | null
               | undefined;
           }) => (
-            <li key={account._id} style={{ marginTop: "1rem" }}>
-              <button
+            <li
+              key={account._id}
+              style={{ width: "100%" }}
+              className="border-2 border-black p-4"
+            >
+              {/* <button
                 style={{ marginRight: "1rem" }}
                 onClick={onDeleteClick.bind(this, account._id)}
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
               >
                 <i className="material-icons">delete</i>
-              </button>
-              <b>{account.institutionName}</b>
+              </button> */}
+              {/* <p>
+                <b className="text-xl">{account.institutionName}</b> delete
+              </p> */}
+              <div
+                className="flex flex-row"
+                style={{ justifyContent: "space-between" }}
+              >
+                <b style={{ width: "80%" }}>{account.institutionName}</b>
+                <p
+                  className="text-blue-700"
+                  onClick={onDeleteClick.bind(this, account._id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  delete
+                </p>
+              </div>
             </li>
           )
         );
   return (
-    <div className="ml-20 mainc">
-      <br />
-
-      <h2>
-        <p className="font-bold text-5xl ">Welcome!</p>
-      </h2>
-      <p className="text-2xl smol">Hey there</p>
-      <h5>
-        <b className="text-3xl ">Linked Accounts</b>
-      </h5>
-      <p className="text-xl smol">Add or remove your bank accounts below</p>
-      <ul className="text-lg">{accountItems}</ul>
-      <br />
-
-      {linkToken != null ? (
-        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-          <Link {...props} linkToken={linkToken} />
-        </button>
-      ) : (
-        <h3 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-          Loading..
-        </h3>
-      )}
+    <div
+      className="flex flex-row mainc ml-10"
+      style={{ justifyContent: "space-between", marginRight: "20%" }}
+    >
+      <div>
+        <br />
+        Fantastic!
+        <br />
+        <br />
+        <p className="text-gray-500">
+          Next, which bank does your business use?
+        </p>
+        <br />
+        {linkToken != null && decoded != null ? (
+          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <Link {...props} linkToken={linkToken} />
+          </button>
+        ) : (
+          <h3 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Loading..
+          </h3>
+        )}
+      </div>
+      <div style={{ width: "50%", justifyContent: "center" }}>
+        {accountItems.length > 0 ? (
+          <div>
+            You're all set!
+            <br />
+            <br />
+            <p className="text-gray-500">
+              Below are systems you mapped to ClaimYourAid.com:
+            </p>
+            <br />
+            <ul style={{ width: "60%", margin: "auto" }} className="text-lg">
+              {accountItems}
+            </ul>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };

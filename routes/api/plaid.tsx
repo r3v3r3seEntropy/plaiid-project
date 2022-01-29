@@ -34,8 +34,9 @@ router.post("/create_link_token", async function (request, response) {
   // Get the client_user_id by searching for the current user
   // const user = await User.find(...); mongodb field _id unique
   //const clientUserId = user.id; logged in user k liye key  db email pwd + id
-
   try {
+    console.log(request.data);
+
     const returnres = async () => {
       if (typeof uniq !== "undefined") {
         const request1 = {
@@ -43,7 +44,7 @@ router.post("/create_link_token", async function (request, response) {
             // This should correspond to a unique id for the current user.
             client_user_id: uniq,
           },
-          client_name: "Plaid Test App",
+          client_name: "ClaimYourAid",
           products: ["auth", "transactions"],
           language: "en",
           country_codes: ["us"],
@@ -86,7 +87,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     PUBLIC_TOKEN = req.body.public_token;
-
+    console.log(req.body);
     const userId = req.user.id;
     const institution = req.body.metadata.institution;
     const { name, institution_id } = institution;
@@ -99,6 +100,7 @@ router.post(
       const response = await client.itemPublicTokenExchange(request);
       ACCESS_TOKEN = await response.data.access_token;
       ITEM_ID = await response.data.item_id;
+      await console.log(response.data);
       const mungu = async () => {
         if (PUBLIC_TOKEN) {
           Account.findOne({
@@ -179,7 +181,7 @@ router.post(
               accountName: institutionName,
               transactions: response.data.transactions,
             });
-            console.log(transactions);
+
             if (transactions.length === accounts.length) {
               res.json(transactions);
             }
@@ -191,7 +193,6 @@ router.post(
 );
 
 router.post("/CreateCompany", (req, res) => {
-  console.log(req.body);
   const newcompany = new Company({
     name: req.body.name,
     ein: req.body.ein,
