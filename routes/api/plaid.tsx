@@ -35,7 +35,7 @@ router.post("/create_link_token", async function (request, response) {
   // const user = await User.find(...); mongodb field _id unique
   //const clientUserId = user.id; logged in user k liye key  db email pwd + id
   try {
-    console.log(request.data);
+    console.log(request.body);
 
     const returnres = async () => {
       if (typeof uniq !== "undefined") {

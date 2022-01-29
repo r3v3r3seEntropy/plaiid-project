@@ -39,7 +39,7 @@ const Dash = (props: {
     setdecoded(veryUniqueId);
     const response = await fetch("api/plaid/create_link_token", {
       method: "POST",
-      body: JSON.stringify({ veryUniqueId }),
+      body: JSON.stringify({ ids: decoded }),
     });
     const data = await response.json();
 
@@ -61,15 +61,17 @@ const Dash = (props: {
     return JSON.parse(jsonPayload);
   };
   useEffect(() => {
-    props.getAccounts();
     generateToken();
-  }, []);
+
+    props.getAccounts();
+  }, [decoded]);
   console.log(props);
   adac = props.addAccount;
   ac = props.plaid.accounts;
   //console.log(adac,ac);
   // props.getAccount() props
   // Delete account
+
   const onDeleteClick = (id: any) => {
     const { accounts } = props.plaid;
     const accountData = {
