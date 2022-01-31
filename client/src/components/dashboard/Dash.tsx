@@ -7,6 +7,7 @@ import {
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import axios from "axios";
 import {
   getTransactions,
   addAccount,
@@ -14,10 +15,10 @@ import {
   deleteAccount,
 } from "../../actions/accountActions";
 import { logoutUser } from "../../actions/authActions";
-
+import bank from "../../img/bank.png";
 var adac: (arg0: { public_token: any; metadata: any }) => void;
 var ac: any;
-var veryUniqueId;
+var veryUniqueId: React.SetStateAction<null> = null;
 const Dash = (props: {
   addAccount?: any;
   accounts?: any;
@@ -37,11 +38,10 @@ const Dash = (props: {
     veryUniqueId = parseJWT(newToken).id;
     console.log(veryUniqueId);
     setdecoded(veryUniqueId);
-    const response = await fetch("api/plaid/create_link_token", {
-      method: "POST",
-      body: JSON.stringify({ ids: decoded }),
+    const response = await axios.post("/api/plaid/create_link_token", {
+      id: veryUniqueId,
     });
-    const data = await response.json();
+    const data = await response.data;
 
     setLinkToken(data.link_token);
     //console.log(linkToken);
@@ -64,7 +64,7 @@ const Dash = (props: {
     generateToken();
 
     props.getAccounts();
-  }, [decoded]);
+  }, []);
   console.log(props);
   adac = props.addAccount;
   ac = props.plaid.accounts;
@@ -123,9 +123,13 @@ const Dash = (props: {
               </p> */}
               <div
                 className="flex flex-row"
-                style={{ justifyContent: "space-between" }}
+                style={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                <b style={{ width: "80%" }}>{account.institutionName}</b>
+                <img src={bank} alt="bank" className="w-10 h-10" />
+                <p style={{ width: "80%" }}>{account.institutionName}</p>
                 <p
                   className="text-blue-700"
                   onClick={onDeleteClick.bind(this, account._id)}
@@ -139,7 +143,7 @@ const Dash = (props: {
         );
   return (
     <div
-      className="flex flex-row mainc ml-10"
+      className="mainc ml-10"
       style={{ justifyContent: "space-between", marginRight: "20%" }}
     >
       <div>
@@ -147,11 +151,31 @@ const Dash = (props: {
         Fantastic!
         <br />
         <br />
-        <p className="text-gray-500">
-          Next, which bank does your business use?
-        </p>
+        <div style={{ width: "50%", justifyContent: "center" }}>
+          {accountItems.length > 0 ? (
+            <div>
+              You're all set!
+              <br />
+              <br />
+              <p className="text-gray-500">
+                Below are systems you mapped to ClaimYourAid.com:
+              </p>
+              <br />
+              <ul style={{ width: "60%" }} className="text-s">
+                {accountItems}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
         <br />
-        {linkToken != null && decoded != null ? (
+        <p className="text-gray-500">
+          {accountItems.length == 0
+            ? "Next, which bank does your business use?"
+            : ""}
+        </p>
+        {linkToken !== null ? (
           <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             <Link {...props} linkToken={linkToken} />
           </button>
@@ -159,24 +183,6 @@ const Dash = (props: {
           <h3 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Loading..
           </h3>
-        )}
-      </div>
-      <div style={{ width: "50%", justifyContent: "center" }}>
-        {accountItems.length > 0 ? (
-          <div>
-            You're all set!
-            <br />
-            <br />
-            <p className="text-gray-500">
-              Below are systems you mapped to ClaimYourAid.com:
-            </p>
-            <br />
-            <ul style={{ width: "60%", margin: "auto" }} className="text-lg">
-              {accountItems}
-            </ul>
-          </div>
-        ) : (
-          ""
         )}
       </div>
     </div>

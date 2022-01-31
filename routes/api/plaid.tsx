@@ -25,6 +25,7 @@ const client = new PlaidApi(configuration);
 var uniq;
 router.post("/getid", (req, res) => {
   try {
+    console.log("this is getid", req.body);
     uniq = req.body.id;
   } catch (err) {
     console.log("this is the getid error", err.data);
@@ -34,31 +35,24 @@ router.post("/create_link_token", async function (request, response) {
   // Get the client_user_id by searching for the current user
   // const user = await User.find(...); mongodb field _id unique
   //const clientUserId = user.id; logged in user k liye key  db email pwd + id
-  try {
-    console.log(request.body);
+  console.log("token decoded from createlinktoken", request.body);
 
-    const returnres = async () => {
-      if (typeof uniq !== "undefined") {
-        const request1 = {
-          user: {
-            // This should correspond to a unique id for the current user.
-            client_user_id: uniq,
-          },
-          client_name: "ClaimYourAid",
-          products: ["auth", "transactions"],
-          language: "en",
-          country_codes: ["us"],
-        };
-        const createTokenResponse = await client.linkTokenCreate(request1);
-        await response.json(createTokenResponse.data);
-      } else {
-        setTimeout(returnres, 250);
-      }
-    };
-    returnres();
+  const request1 = {
+    user: {
+      // This should correspond to a unique id for the current user.
+      client_user_id: request.body.id,
+    },
+    client_name: "ClaimYourAid",
+    products: ["auth", "transactions"],
+    language: "en",
+    country_codes: ["us"],
+  };
+  try {
+    const createTokenResponse = await client.linkTokenCreate(request1);
+    await response.json(createTokenResponse.data);
   } catch (error) {
     // handle error
-    console.log("This is a plaid link button error", error.data);
+    console.log("This is a plaid link button error", error);
   }
 });
 

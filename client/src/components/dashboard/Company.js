@@ -216,11 +216,11 @@ class Company extends Component {
                     />
                     <div
                       className="col s12"
-                      style={{ paddingLeft: "11.250px" }}
+                      style={{ paddingLeft: "11.250px", marginRight: "10px" }}
                     >
                       <button
                         style={{
-                          width: "90%",
+                          width: "100%",
                           borderRadius: "3px",
                           letterSpacing: "1.5px",
                           marginTop: "1rem",
