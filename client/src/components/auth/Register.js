@@ -57,23 +57,24 @@ class Register extends Component {
     return (
       <>
         <LogoHeader />
-        <div className="container flex">
-          <div className="row max-w-xs w-full m-auto bg-white box-border border-4 rounded p-5">
+        <div className="container">
+          <div className="intro ml-20">
+            <p>
+              Are you ready to find out which grants, credits, and refunds, your
+              business qualifies for?
+            </p>
+            <br />
+            <p className="text-gray-500">Register for ClaimYourAid.com now:</p>
+            <br />
+          </div>
+          <div
+            style={{ borderColor: borderColor }}
+            className="row max-w-xl w-full m-auto bg-white box-border border-4 rounded p-5"
+          >
             <div className="col s8 offset-s2">
-              <Link to="/" className="btn-flat waves-effect">
-                <i className="material-icons left">keyboard_backspace</i> Back
-              </Link>
-              <br />
-              <br />
-              <div className="text-xl">
-                <h4>
-                  <b>Register</b>
-                </h4>
-              </div>
-              <br />
               <form noValidate onSubmit={this.onSubmit}>
                 <div className="input-field col s12">
-                  <label htmlFor="email" className="block mb-2 text-green-500">
+                  <label htmlFor="email" className="block mb-2 text-gray-500">
                     Email
                   </label>
 
@@ -84,7 +85,7 @@ class Register extends Component {
                     id="email"
                     type="email"
                     className={classnames(
-                      "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
+                      "w-full p-2 mb-6 text-green-700 border-2 outline-none",
                       {
                         invalid: errors.email,
                       }
@@ -95,9 +96,9 @@ class Register extends Component {
                 <div className="input-field col s12">
                   <label
                     htmlFor="password"
-                    className="block mb-2 text-green-500"
+                    className="block mb-2 text-gray-500"
                   >
-                    {"Password ((6 or more letters & numbers)}"}
+                    {"Password (6 or more letters & numbers)"}
                   </label>
 
                   <input
@@ -107,7 +108,7 @@ class Register extends Component {
                     id="password"
                     type="password"
                     className={classnames(
-                      "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
+                      "w-full p-2 mb-6 text-green-700 border-2 outline-none",
                       {
                         invalid: errors.password,
                       }
@@ -117,20 +118,26 @@ class Register extends Component {
                 </div>
 
                 <div className="col" style={{ paddingLeft: "11.250px" }}>
+                  <p className="text-xs text-center" style={{ width: "50%" }}>
+                    {
+                      "By clicking Agree & Join, you agree to the ClaimYourAid User Agreement, Privacy Policy, and Cookie Policy."
+                    }
+                  </p>
                   <button
                     style={{
                       width: "150px",
                       borderRadius: "3px",
                       letterSpacing: "1.5px",
                       marginTop: "1rem",
+                      backgroundColor: "#00B050",
                     }}
                     type="submit"
-                    className="w-full bg-green-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-1 rounded"
+                    className="w-full hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded"
                   >
-                    Sign up
+                    Agree {"&"} Join
                   </button>
                 </div>
-                <p className="grey-text text-darken-1">
+                {/* <p className="grey-text text-darken-1">
                   Already have an account?{" "}
                   <Link
                     to="/login"
@@ -138,7 +145,7 @@ class Register extends Component {
                   >
                     Log in
                   </Link>
-                </p>
+                </p> */}
               </form>
             </div>
           </div>

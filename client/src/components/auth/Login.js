@@ -75,7 +75,7 @@ class Login extends Component {
         <div className="container flex content-center ">
           <div
             style={{ marginTop: "1rem", borderColor: "#A2C987" }}
-            className="max-w-xs w-full m-auto bg-white box-border border-4 rounded p-5"
+            className="max-w-xl w-full m-auto bg-white box-border border-4 rounded p-5"
           >
             <div className="col s8 offset-s2">
               <br />
@@ -147,7 +147,7 @@ class Login extends Component {
                     <center>Sign in</center>
                   </button>
                 </div>
-                <p className="grey-text text-darken-1">
+                <p className="grey-text text-darken-1 text-center">
                   New to ClaimYourAid?{" "}
                   <Link
                     to="/register"
