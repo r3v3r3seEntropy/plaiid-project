@@ -4,32 +4,36 @@ const Schema = mongoose.Schema;
 const AccountSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId, // how we associate each account with a user
-    ref: "users"
+    ref: "users",
+  },
+  companyId: {
+    type: Schema.Types.ObjectId, // how we associate each account with a company
+    ref: "users",
   },
   accessToken: {
     type: String,
-    required: true
+    required: true,
   },
   itemId: {
     type: String,
-    required: true
+    required: true,
   },
   institutionId: {
     type: String,
-    required: true
+    required: true,
   },
   institutionName: {
-    type: String
+    type: String,
   },
   accountName: {
-    type: String
+    type: String,
   },
   accountType: {
-    type: String
+    type: String,
   },
   accountSubtype: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 module.exports = Account = mongoose.model("account", AccountSchema);

@@ -11,6 +11,7 @@ const { Configuration, PlaidApi, PlaidEnvironments } = require("plaid");
 const Account = require("../../models/Account");
 const User = require("../../models/User");
 const Company = require("../../models/Company");
+var CompanyId;
 const configuration = new Configuration({
   basePath: PlaidEnvironments["sandbox"],
   baseOptions: {
@@ -106,6 +107,7 @@ router.post(
                 console.log("Account already exists");
               } else {
                 const newAccount = new Account({
+                  companyId: CompanyId,
                   userId: userId,
                   accessToken: ACCESS_TOKEN,
                   itemId: ITEM_ID,
@@ -193,6 +195,9 @@ router.post("/CreateCompany", (req, res) => {
     states: req.body.states,
   });
 
-  newcompany.save().then((company) => res.json(company));
+  newcompany.save().then((company) => {
+    CompanyId = company._id;
+    res.json(company);
+  });
 });
 module.exports = router;
