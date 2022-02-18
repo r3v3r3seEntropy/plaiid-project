@@ -9,6 +9,8 @@ import store from "./store";
 import axios from "axios";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
+import Register2 from "./components/auth/Register2";
+
 import Login from "./components/auth/Login";
 import Company from "./components/dashboard/Company";
 import PrivateRoute from "./components/private-route/PrivateRoute";
@@ -46,6 +48,7 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/company" component={Company} />
+            <Route exact path="/register2" component={Register2} />
 
             <Switch>
               <PrivateRoute exact path="/dash" component={Accounts} />

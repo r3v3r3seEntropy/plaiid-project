@@ -6,15 +6,12 @@ import { registerUser } from "../../actions/authActions";
 import classnames from "classnames";
 import LogoHeader from "../layout/LogoHeader";
 const borderColor = "#A2C987";
-
 class Register extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
       email: "",
       password: "",
-      password2: "",
       errors: {},
     };
   }
@@ -27,10 +24,6 @@ class Register extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dash");
-    }
-
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors,
@@ -46,14 +39,16 @@ class Register extends Component {
     e.preventDefault();
 
     const newUser = {
-      name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      password2: this.state.password2,
     };
     this.props.history.nusr = newUser;
     // console.log(this.props.history.nusr);
-    this.props.history.push("/company");
+    // history.push is used to redirect to another page but empty current
+    this.props.history.push({
+      pathname: "/register2",
+      state: newUser,
+    });
   };
 
   render() {
@@ -77,26 +72,6 @@ class Register extends Component {
               </div>
               <br />
               <form noValidate onSubmit={this.onSubmit}>
-                <div className="input-field col s12">
-                  <label htmlFor="name" className="block mb-2 text-green-500">
-                    Name
-                  </label>
-
-                  <input
-                    onChange={this.onChange}
-                    value={this.state.name}
-                    error={errors.name}
-                    id="name"
-                    type="text"
-                    className={classnames(
-                      "w-full p-2 mb-6 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
-                      {
-                        invalid: errors.name,
-                      }
-                    )}
-                  />
-                  <span className="text-red-600">{errors.name}</span>
-                </div>
                 <div className="input-field col s12">
                   <label htmlFor="email" className="block mb-2 text-green-500">
                     Email
@@ -122,7 +97,7 @@ class Register extends Component {
                     htmlFor="password"
                     className="block mb-2 text-green-500"
                   >
-                    Password
+                    {"Password ((6 or more letters & numbers)}"}
                   </label>
 
                   <input
@@ -140,29 +115,7 @@ class Register extends Component {
                   />
                   <span className="text-red-600">{errors.password}</span>
                 </div>
-                <div className="input-field col s12">
-                  <label
-                    htmlFor="password2"
-                    className="block mb-2 text-green-500"
-                  >
-                    Confirm Password
-                  </label>
 
-                  <input
-                    onChange={this.onChange}
-                    value={this.state.password2}
-                    error={errors.password2}
-                    id="password2"
-                    type="password"
-                    className={classnames(
-                      "w-full p-2 mb-1 text-green-700 border-b-2 border-green-500 outline-none focus:bg-gray-300",
-                      {
-                        invalid: errors.password2,
-                      }
-                    )}
-                  />
-                  <span className="text-red-600">{errors.password2}</span>
-                </div>
                 <div className="col" style={{ paddingLeft: "11.250px" }}>
                   <button
                     style={{

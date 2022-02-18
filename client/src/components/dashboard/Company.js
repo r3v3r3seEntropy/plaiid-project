@@ -69,6 +69,7 @@ class Company extends Component {
     super();
     this.state = {
       name: "",
+      username: "",
       ein: "",
       selectedOptions: null,
       showConfirmation: false,
@@ -85,7 +86,8 @@ class Company extends Component {
       // we will update local component state and force component to rerender
       // with new data.
       curUser = store.getState();
-      console.log(curUser);
+      //console.log(curUser);
+      //this.setState({ username: curUser.name.split()[0] });
     });
   }
 
@@ -107,8 +109,10 @@ class Company extends Component {
       ein: this.state.ein,
       states: selectedStates,
     };
+    // send company data to backedn and store in db
     axios.post("/api/plaid/CreateCompany", companyData);
-    this.props.registerUser(this.props.history.nusr, this.props.history);
+    console.log(this.props.location.state);
+    this.props.registerUser(this.props.location.state, this.props.history);
   };
 
   render() {
@@ -153,7 +157,7 @@ class Company extends Component {
         ) : (
           <div>
             <div className="py-1 ml-20">
-              Welcome {}
+              Welcome {this.state.username}
               <br />
               <br />
               <label className="text-gray-500">

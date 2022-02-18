@@ -3,7 +3,7 @@ import logo from "../../img/logo.png";
 import store from "../../../src/store";
 import { logoutUser } from "../../../src/actions/authActions";
 const LogoHeader = (props) => {
-  console.log(props);
+  //console.log(props);
   const style1 = {
     background: "#00B050",
     paddingTop: "0.5rem",
