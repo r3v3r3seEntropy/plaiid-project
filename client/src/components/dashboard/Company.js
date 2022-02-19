@@ -168,7 +168,7 @@ class Company extends Component {
             <div className="container flex ">
               <div
                 style={{ marginTop: "0.25rem", borderColor: borderColor }}
-                className="max-w-xs w-full m-auto border-4 rounded p-5"
+                className="max-w-xl w-full m-auto border-4 rounded p-5"
               >
                 <div className="col s8 offset-s2">
                   <br />

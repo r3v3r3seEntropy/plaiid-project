@@ -196,7 +196,7 @@ router.post("/CreateCompany", (req, res) => {
   });
 
   newcompany.save().then((company) => {
-    CompanyId = company._id;
+    CompanyId = company.name;
     res.json(company);
   });
 });

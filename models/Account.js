@@ -7,8 +7,8 @@ const AccountSchema = new Schema({
     ref: "users",
   },
   companyId: {
-    type: Schema.Types.ObjectId, // how we associate each account with a company
-    ref: "users",
+    type: String,
+    required: true,
   },
   accessToken: {
     type: String,
