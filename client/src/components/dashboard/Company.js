@@ -111,8 +111,12 @@ class Company extends Component {
     };
     // send company data to backedn and store in db
     axios.post("/api/plaid/CreateCompany", companyData);
-    console.log(this.props.location.state);
-    this.props.registerUser(this.props.location.state, this.props.history);
+    const fullUser = this.props.location.state;
+    //console.log(this.props.location.state);
+    this.props.history.push({
+      pathname: "/payroll",
+      state: fullUser,
+    });
   };
 
   render() {

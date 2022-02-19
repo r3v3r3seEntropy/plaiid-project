@@ -10,6 +10,7 @@ import axios from "axios";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Register2 from "./components/auth/Register2";
+import Payroll from "./components/dashboard/Payroll";
 
 import Login from "./components/auth/Login";
 import Company from "./components/dashboard/Company";
@@ -49,7 +50,7 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/company" component={Company} />
             <Route exact path="/register2" component={Register2} />
-
+            <Route exact path="/payroll" component={Payroll} />
             <Switch>
               <PrivateRoute exact path="/dash" component={Accounts} />
             </Switch>
