@@ -8,6 +8,8 @@ import axios from "axios";
 import LogoHeader from "../layout/LogoHeader";
 import store from "../../../src/store";
 import { registerUser } from "../../actions/authActions";
+import { Fragment } from "react";
+const space = <Fragment>&nbsp;&nbsp;&nbsp;&nbsp;</Fragment>;
 const Payroll = (props) => {
   useEffect(() => {
     if (props.auth.isAuthenticated) {
@@ -20,7 +22,7 @@ const Payroll = (props) => {
       alert("Please select a choice");
     } else {
       const userInfo = props.location.state;
-      console.log(userInfo);
+      //console.log(userInfo);
       props.registerUser(userInfo, props.history);
     }
   };
@@ -33,21 +35,22 @@ const Payroll = (props) => {
           <p>Let's begin!</p>
           <br />
           <p className="text-gray-500">
-            Which payroll company does your business use?
+            Which payroll company does your business use? {space}
+            {space}
+            {space}
+            {space}
+            <select
+              id="dropdown"
+              className="border-2 border-green-500"
+              onChange={handleChange}
+            >
+              <option value="choose">---Choose one---</option>
+              <option value="adp">ADP</option>
+              <option value="paychx">Paychex</option>
+              <option value="workday">Workday</option>
+              <option value="other">Other</option>
+            </select>
           </p>
-        </div>
-        <div>
-          <select
-            id="dropdown"
-            className="border-2 border-green-500"
-            onChange={handleChange}
-          >
-            <option value="choose">---Choose one---</option>
-            <option value="adp">ADP</option>
-            <option value="paychx">Paychex</option>
-            <option value="workday">Workday</option>
-            <option value="other">Other</option>
-          </select>
         </div>
       </div>
     </>

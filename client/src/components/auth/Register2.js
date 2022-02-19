@@ -117,10 +117,16 @@ class Register2 extends Component {
                 />
               </div>
 
-              <div className="col m-auto" style={{ paddingLeft: "11.250px" }}>
+              <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                 <button
                   style={{
-                    width: "450px",
+                    width: "250px",
                     borderRadius: "3px",
                     letterSpacing: "1.5px",
                     marginTop: "1rem",

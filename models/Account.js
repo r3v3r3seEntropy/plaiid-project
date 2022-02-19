@@ -8,7 +8,7 @@ const AccountSchema = new Schema({
   },
   companyId: {
     type: String,
-    required: true,
+    required: false,
   },
   accessToken: {
     type: String,

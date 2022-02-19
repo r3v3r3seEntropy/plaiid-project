@@ -9,6 +9,8 @@ import LogoHeader from "../layout/LogoHeader";
 import store from "../../../src/store";
 import { registerUser } from "../../actions/authActions";
 import Select from "react-select";
+import { Fragment } from "react";
+const space = <Fragment>&nbsp;&nbsp;&nbsp;&nbsp;</Fragment>;
 const states = [
   { value: "Alabama", label: "Alabama" },
   { value: "Alaska", label: "Alaska" },
@@ -89,6 +91,7 @@ class Company extends Component {
       //console.log(curUser);
       //this.setState({ username: curUser.name.split()[0] });
     });
+    this.setState({ username: this.props.location.state.fname });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -134,29 +137,66 @@ class Company extends Component {
           <div className="intro ml-20">
             <p>We just created your company profile</p>
             <br />
-            <p className="text-gray-500">
-              You signed up with ClaimYourAid.com so we can look for Grants,
-              Credits, and Refunds that your business qualifies for.
-              <br /> To do so most effectively, it is important to map your
-              company systems to ClaimYourAid.com so we can periodically
-              <br /> update your information on record in order to find the
-              latest programs your business qualifies for.
+            <p className="text-gray-600">
+              <p style={{ width: "100%" }}>
+                You signed up with ClaimYourAid.com so we can look for Grants,
+                Credits, and Refunds that your business qualifies for. To do so
+                most effectively, it is important to map your company systems to
+                ClaimYourAid.com so we can periodically update your information
+                on record in order to find the latest programs your business
+                qualifies for.
+              </p>
             </p>
-            <button
-              style={{
-                justifyContent: "center",
-                width: "15%",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem",
-                backgroundColor: "#00B050",
-              }}
-              onClick={this.onSubmit}
-              type="submit"
-              className="w-full text-white font-bold py-2 px-4 rounded"
-            >
-              Click here to continue
-            </button>
+
+            <div className="container flex content-center ">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              ></div>
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+              {space}
+
+              <button
+                style={{
+                  justifyContent: "center",
+                  width: "30%",
+                  borderRadius: "3px",
+                  letterSpacing: "1.5px",
+                  marginTop: "1rem",
+                  backgroundColor: "#00B050",
+                }}
+                onClick={this.onSubmit}
+                type="submit"
+                className="w-full text-white font-bold py-2 px-4 rounded"
+              >
+                Click here to continue
+              </button>
+            </div>
           </div>
         ) : (
           <div>
@@ -169,7 +209,7 @@ class Company extends Component {
                 Credits, and Refunds to your business:
               </label>
             </div>
-            <div className="container flex ">
+            <div className="container flex content-center ">
               <div
                 style={{ marginTop: "0.25rem", borderColor: borderColor }}
                 className="max-w-xl w-full m-auto border-4 rounded p-5"
@@ -223,12 +263,15 @@ class Company extends Component {
                       style={{ borderColor: borderColor }}
                     />
                     <div
-                      className="col s12"
-                      style={{ paddingLeft: "11.250px", marginRight: "10px" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                     >
                       <button
                         style={{
-                          width: "100%",
+                          width: "50%",
                           borderRadius: "3px",
                           letterSpacing: "1.5px",
                           marginTop: "1rem",
