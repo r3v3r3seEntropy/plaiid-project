@@ -26,7 +26,7 @@ mongoose
     db,
     { useNewUrlParser: true }
   )
-  .then(() => console.log("MongoDB successfully connected"))
+  .then(() => console.log("MongoDB successfully is rooted connected"))
   .catch(err => console.log(err));
 
 // Passport middleware
