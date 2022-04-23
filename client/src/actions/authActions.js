@@ -14,6 +14,7 @@ export const registerUser = (userData, history) => (dispatch) => {
       // Set token to localStorage
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
+      localStorage.setItem("type", "cyauser");
       // Set token to Auth header
       setAuthToken(token);
       // Decode token to get user data
@@ -40,6 +41,8 @@ export const loginUser = (userData) => (dispatch) => {
       // Set token to localStorage
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
+      localStorage.setItem("type", "cyauser");
+
       // Set token to Auth header
       setAuthToken(token);
       // Decode token to get user data

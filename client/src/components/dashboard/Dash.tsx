@@ -93,7 +93,7 @@ const Dash = (props: {
   //generateToken();
   const accounts = props.plaid.accounts;
   let accountItems =
-    accounts === undefined
+    accounts === null || null
       ? ""
       : accounts.map(
           (account: {

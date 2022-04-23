@@ -31,7 +31,8 @@ if (localStorage.jwtToken) {
   store.dispatch(setCurrentUser(decoded));
   // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
-  if (decoded.exp < currentTime) {
+  const otherDomain = localStorage.getItem("type") !== "cyauser";
+  if (decoded.exp < currentTime || otherDomain) {
     // Logout user
     store.dispatch(logoutUser());
 
