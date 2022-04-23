@@ -113,6 +113,7 @@ class Company extends Component {
       states: selectedStates,
     };
     // send company data to backedn and store in db
+    localStorage.setItem("company", companyData.name);
     axios.post("/api/plaid/CreateCompany", companyData);
     const fullUser = this.props.location.state;
     //console.log(this.props.location.state);

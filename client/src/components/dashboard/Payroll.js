@@ -22,6 +22,7 @@ const Payroll = (props) => {
       alert("Please select a choice");
     } else {
       const userInfo = props.location.state;
+      userInfo.companyId = localStorage.getItem("company");
       //console.log(userInfo);
       props.registerUser(userInfo, props.history);
     }

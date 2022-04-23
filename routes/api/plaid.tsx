@@ -17,8 +17,8 @@ const configuration = new Configuration({
   basePath: PlaidEnvironments["sandbox"],
   baseOptions: {
     headers: {
-      "PLAID-CLIENT-ID": "6166d89a162e690010d7084b",
-      "PLAID-SECRET": "9097d5e53b34172035a9cbf66e1047",
+      "PLAID-CLIENT-ID": "62449f9f9f9f9f9f9f9",
+      "PLAID-SECRET": "da652c9ffffffffffffffff",
     },
   },
 });
@@ -86,6 +86,7 @@ router.post(
     console.log(req.body);
     const userId = req.user.id;
     const institution = req.body.metadata.institution;
+    const comId = req.body.companyId;
     const { name, institution_id } = institution;
 
     const publicToken = req.body.public_token;
@@ -108,7 +109,7 @@ router.post(
                 console.log("Account already exists");
               } else {
                 const newAccount = new Account({
-                  companyId: CompanyId,
+                  companyId: comId,
                   userId: userId,
                   accessToken: ACCESS_TOKEN,
                   itemId: ITEM_ID,
