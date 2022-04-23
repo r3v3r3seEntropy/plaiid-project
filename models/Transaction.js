@@ -10,6 +10,10 @@ const TransactionSchema = new Schema({
     type: Schema.Types.ObjectId, // how we associate each transaction with a user
     ref: "accounts",
   },
+  accessToken: {
+    type: String,
+    required: true,
+  },
   accountname: {
     type: String,
     required: true,

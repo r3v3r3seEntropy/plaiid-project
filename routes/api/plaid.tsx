@@ -136,6 +136,7 @@ router.post(
                       const transaction = new Transaction({
                         userId: userId,
                         accountId: newAccount._id,
+                        accessToken: newAccount.accessToken,
                         accountname: name,
                         name: transaction1[i].name,
                         amount: transaction1[i].amount,
