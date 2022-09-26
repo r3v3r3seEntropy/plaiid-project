@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
+
+import { useFinchConnect } from "react-finch-connect";
 import {
   getTransactions,
   addAccount,
@@ -16,6 +18,7 @@ import {
 } from "../../actions/accountActions";
 import { logoutUser } from "../../actions/authActions";
 import bank from "../../img/bank.png";
+import salary from "../../img/salary.png";
 var adac: (arg0: { public_token: any; metadata: any }) => void;
 var ac: any;
 var veryUniqueId: React.SetStateAction<null> = null;
@@ -30,6 +33,36 @@ const Dash = (props: {
   // Add account
   const [linkToken, setLinkToken] = useState(null);
   const [decoded, setdecoded] = useState(null);
+  const [code, setCode] = useState(null);
+  const [linkedPayroll, setLinkedPayroll] = useState<any[]>([]);
+  const onSuccess = async ({ code }: any) => {
+    setCode(code);
+    console.log(code);
+    const response = await axios.post("/api/plaid/fexchange", { code });
+    // console.log(response);
+    const responseCompany = await axios.post(
+      "/api/plaid/fcompany",
+      response.data
+    );
+    const legal_name = await responseCompany.data.legal_name;
+    setLinkedPayroll([...linkedPayroll, responseCompany.data]);
+    const addPayroll = await axios.post("/api/plaid/addPayroll", {
+      ...responseCompany.data,
+      accesstoken: response.data.access_token,
+    });
+    // console.log(responseCompany);
+  };
+  const onError = ({ errorMessage }: any) => console.error(errorMessage);
+  const onClose = () => console.log("User exited Finch Connect");
+
+  const { open } = useFinchConnect({
+    clientId: "475f6b56-3165-4c02-a1fe-c8edf6cff57b",
+    // payrollProvider: '<payroll-provider-id>',
+    products: ["company", "directory"],
+    onSuccess,
+    onError,
+    onClose,
+  });
   const generateToken = async () => {
     const token = localStorage.jwtToken;
 
@@ -60,10 +93,17 @@ const Dash = (props: {
 
     return JSON.parse(jsonPayload);
   };
+  const getPayrolls = async () => {
+    const res = await axios.get("/api/plaid/getPayroll");
+    const addedPayrolls = await res.data;
+    console.log(addedPayrolls);
+    setLinkedPayroll(addedPayrolls);
+  };
   useEffect(() => {
     generateToken();
 
     props.getAccounts();
+    getPayrolls();
   }, []);
   console.log(props);
   adac = props.addAccount;
@@ -141,6 +181,29 @@ const Dash = (props: {
             </li>
           )
         );
+  let payrollItems =
+    linkedPayroll === null || null
+      ? ""
+      : linkedPayroll.map((payroll) => (
+          <li
+            key={payroll.id ? payroll.id : payroll.payrollId}
+            style={{ width: "100%" }}
+            className="border-2 border-black p-4"
+          >
+            <div
+              className="flex flex-row"
+              style={{
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <img src={salary} alt="bank" className="w-10 h-10" />
+              <p style={{ width: "80%" }}>
+                {payroll.legal_name ? payroll.legal_name : payroll.accountname}
+              </p>
+            </div>
+          </li>
+        ));
   return (
     <div
       className="mainc ml-10"
@@ -184,6 +247,34 @@ const Dash = (props: {
             Loading..
           </h3>
         )}
+        <br />
+        <br />
+        <p className="text-gray-500">
+          {payrollItems.length == 0
+            ? "Next, which payroll does your business use?"
+            : ""}
+        </p>
+        <div style={{ width: "50%", justifyContent: "center" }}>
+          {payrollItems.length > 0 ? (
+            <div>
+              <p className="text-gray-500">
+                Below are payroll systems you mapped to ClaimYourAid.com:
+              </p>
+              <br />
+              <ul style={{ width: "60%" }} className="text-s">
+                {payrollItems}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-10"
+          onClick={() => open()}
+        >
+          Connect Payroll
+        </button>
       </div>
     </div>
   );

@@ -5,23 +5,37 @@ const router = express.Router();
 const passport = require("passport");
 const moment = require("moment");
 const http = require("http");
+const MongoClient = require("mongodb").MongoClient;
 const { Configuration, PlaidApi, PlaidEnvironments } = require("plaid");
 // import fetch from "node-fetch";
 // Load Account and User models
+const axios = require("axios");
 const Account = require("../../models/Account");
 const User = require("../../models/User");
 const Company = require("../../models/Company");
 const Transaction = require("../../models/Transaction");
+const Payroll = require("../../models/Payroll");
 var CompanyId;
 const configuration = new Configuration({
-  basePath: PlaidEnvironments["sandbox"],
+  basePath: PlaidEnvironments["development"],
   baseOptions: {
     headers: {
-      "PLAID-CLIENT-ID": "62449f9f9f9f9f9f9f9",
-      "PLAID-SECRET": "da652c9ffffffffffffffff",
+      "PLAID-CLIENT-ID": "6166d89a162e690010d7084b",
+      "PLAID-SECRET": "ebb73e7ac0eacd73d1b3723e870694",
     },
   },
 });
+const userURI =
+  "mongodb+srv://claimyouraid:cya@cluster0.kfgzq.mongodb.net/?retryWrites=true&w=majority";
+const connectToCluster = async (uri) => {
+  try {
+    let mongoClient = new MongoClient(uri);
+    await mongoClient.connect();
+    return mongoClient;
+  } catch (err) {
+    console.error("Connection to MongoDB Atlas failed!", err);
+  }
+};
 
 const client = new PlaidApi(configuration);
 var uniq;
@@ -97,6 +111,9 @@ router.post(
       const response = await client.itemPublicTokenExchange(request);
       ACCESS_TOKEN = await response.data.access_token;
       ITEM_ID = await response.data.item_id;
+      const mongoClient = await connectToCluster(userURI);
+      const db1 = await mongoClient.db("Cluster0");
+      const txncoll = await db1.collection("transactions");
       await console.log(response.data);
       const mungu = async () => {
         if (PUBLIC_TOKEN) {
@@ -121,20 +138,24 @@ router.post(
                   res.json(account);
                   const now = moment();
                   const today = now.format("YYYY-MM-DD");
-                  const thirtyDaysAgo = now
-                    .subtract(30, "days")
+                  const twoYearsAgo = now
+                    .subtract(2, "years")
                     .format("YYYY-MM-DD");
                   const txnreq = {
                     access_token: response.data.access_token,
-                    start_date: thirtyDaysAgo,
+                    start_date: twoYearsAgo,
                     end_date: today,
+                    options: {
+                      count: 500,
+                    },
                   };
                   //let transactions = [];
+                  var alltxn = [];
                   client.transactionsGet(txnreq).then((response) => {
                     //console.log(response); response.data.transactions = an array of transaction objects
                     let transaction1 = response.data.transactions;
                     for (var i = 0; i < transaction1.length; i++) {
-                      const transaction = new Transaction({
+                      alltxn.push({
                         userId: userId,
                         accountId: newAccount._id,
                         accessToken: newAccount.accessToken,
@@ -144,14 +165,6 @@ router.post(
                         txndate: transaction1[i].date,
                         category: transaction1[i].category[0],
                       });
-                      transaction
-                        .save()
-                        .then((response) => {
-                          console.log("success");
-                        })
-                        .catch((err) => {
-                          console.log(err);
-                        });
                     }
                   });
                 });
@@ -241,4 +254,90 @@ router.post("/CreateCompany", (req, res) => {
     res.json(company);
   });
 });
+
+router.post(
+  "/addPayroll",
+  passport.authenticate("jwt", { session: false }),
+  async function (req, res) {
+    const newPayroll = new Payroll({
+      userId: req.user.id,
+      payrollId: req.body.id,
+      ein: req.body.ein,
+      accessToken: req.body.accesstoken,
+      accountname: req.body.legal_name,
+    });
+    newPayroll.save().then((payroll) => {
+      return res.status(200).json(payroll);
+    }).catch((err)=>{
+      return res.status(400).json(err);
+    })
+    
+  }
+);
+router.get(
+  "/getPayroll",
+  passport.authenticate("jwt", { session: false }),
+  async function (req, res) {
+    // return all payroll documents which has userId = req.user.id
+    const payrolls = await Payroll.find({ userId: req.user.id });
+    return res.status(200).json(payrolls);
+    
+  }
+);
+var faccessToken;
+router.post("/fcompany", async function (req, res) {
+  //console.log(req.body);
+  const fcompanyRequest = {
+    url: "https://api.tryfinch.com/employer/company",
+    method: "GET",
+    headers: {
+      "Finch-API-Version": "2020-09-17",
+      Authorization: "Bearer " + req.body.access_token,
+    },
+  };
+  const companyRes = await axios(fcompanyRequest);
+  console.log(companyRes.data);
+  return res.status(200).json(companyRes.data);
+});
+
+router.post(
+  "/fexchange",
+  passport.authenticate("jwt", { session: false }),
+  async function (req, res) {
+    //console.log(req.user);
+    // console.log(req);
+    const code = req.body.code;
+    const exchangeRequest = {
+      url: "https://api.tryfinch.com/auth/token",
+      method: "POST",
+      // auth: {
+      //   user: "6b15880b-afa3-4c23-a361-afccbc68c23b",
+      //   pass: "finch-secret-sandbox-vJ6JdAIjvBU6z-DViCiBcZkVZ99x-yrBQ7oOXt4R",
+      // },
+      data: {
+        code,
+        redirect_uri: "https://tryfinch.com",
+        client_id: "475f6b56-3165-4c02-a1fe-c8edf6cff57b",
+        client_secret:
+          "finch-secret-dev-pN0E6E_hHWHNkBNja5Q1odplkjp0JHVkidhM6qcr",
+      },
+    };
+    // const authRes = await request({
+    //   uri: "https://api.tryfinch.com/auth/token",
+    //   auth: {
+    //     user: process.env.FCLIENT_ID,
+    //     pass: process.env.FCLIENT_SECRET,
+    //   },
+    //   method: "POST",
+    //   body: { code, redirect_uri: 'https://tryfinch.com' },
+    //   json: true,
+    // });
+
+    const resp = await axios(exchangeRequest);
+    faccessToken = await resp.data.access_token;
+    //console.log('xxx',faccessToken);
+    return res.status(200).json(resp.data);
+  }
+);
+
 module.exports = router;
