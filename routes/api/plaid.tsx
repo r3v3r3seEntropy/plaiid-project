@@ -319,7 +319,7 @@ router.post(
         redirect_uri: "https://tryfinch.com",
         client_id: process.env.FCLIENTID,
         client_secret:
-          process.env.SECRET,
+          process.env.FSECRET,
       },
     };
     // const authRes = await request({
