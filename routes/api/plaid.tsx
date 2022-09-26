@@ -20,8 +20,8 @@ const configuration = new Configuration({
   basePath: PlaidEnvironments["development"],
   baseOptions: {
     headers: {
-      "PLAID-CLIENT-ID": "6166d89a162e690010d7084b",
-      "PLAID-SECRET": "ebb73e7ac0eacd73d1b3723e870694",
+      "PLAID-CLIENT-ID": process.env.CLIENTID,
+      "PLAID-SECRET": process.env.SECRET,
     },
   },
 });
@@ -317,9 +317,9 @@ router.post(
       data: {
         code,
         redirect_uri: "https://tryfinch.com",
-        client_id: "475f6b56-3165-4c02-a1fe-c8edf6cff57b",
+        client_id: process.env.FCLIENTID,
         client_secret:
-          "finch-secret-dev-pN0E6E_hHWHNkBNja5Q1odplkjp0JHVkidhM6qcr",
+          process.env.SECRET,
       },
     };
     // const authRes = await request({
